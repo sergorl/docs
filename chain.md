@@ -69,9 +69,9 @@ struct Tip {
 		rdb: RwLock<DB>,
 	}```
 2. три PMMR-дерева (внутри TxHashSet):
-	2.1 PMMRHandle<OutputStoreable>     
-	2.2 PMMRHandle<RangeProof>
-	2.3 PMMRHandle<TxKernel>	
+	2 PMMRHandle<OutputStoreable>     
+	2 PMMRHandle<RangeProof>
+	2 PMMRHandle<TxKernel>	
 3. односвязный список блоков блокчейна				 
 ```rust pub fn init(
 	db_root:      String,
