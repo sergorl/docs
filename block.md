@@ -133,6 +133,8 @@ kernel_len * BLOCK_KERNEL_WEIGHT > MAX_BLOCK_WEIGHT || input_len > MAX_BLOCK_INP
 4. Верификация входов: 
  для каждого входа, содержащего OutputFeatures::COINBASE_OUTPU, верифицируется его MerkleProof.
 ```rust
+/// The Merkle Proof that shows the output being spent by this input
+/// existed and was unspent at the time of this block (proof of inclusion in output_root)
 /// A Merkle proof.
 /// Proves inclusion of an output (node) in the output MMR.
 /// We can use this to prove an output was unspent at the time of a given block
@@ -154,5 +156,9 @@ pub struct MerkleProof {
 	pub left_right: Vec<bool>,
 }
 ```
+5. Верификация kernel'ов:
+- проверяется, что сумма Commitment'ов входов и выходов равна сумме Commitment'ов в kernel'е
+- проверяется подпись kernel'ов 
+
 
 
