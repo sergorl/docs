@@ -63,15 +63,15 @@ struct Tip {
 - Существует ли блокчейн в БД rocksdb?
 ```rustpub fn chain_exists(db_root: String) -> bool;```
 
-- Создает хранилище типа "ключ-значение", внутри которого находятся БД: 
+- Создает хранилище типа "ключ-значение", внутри которого находятся: 
 1. Thread-safe rocksdb wrapper
-		pub struct Store {
-			rdb: RwLock<DB>,
-		}
+	```rustpub struct Store {
+		rdb: RwLock<DB>,
+	}```
 2. три PMMR-дерева (внутри TxHashSet):
-- PMMRHandle<OutputStoreable>     
-- PMMRHandle<RangeProof>
-- PMMRHandle<TxKernel>	
+	2.1 PMMRHandle<OutputStoreable>     
+	2.2 PMMRHandle<RangeProof>
+	2.3 PMMRHandle<TxKernel>	
 3. односвязный список блоков блокчейна				 
 ```rust pub fn init(
 	db_root:      String,
