@@ -76,6 +76,19 @@ struct Tip {
 ```	
 
 ## Как блоки присоединяются к блокчейну?
+```rust
+pub struct Block {
+	/// The header with metadata and commitments to the rest of the data
+	pub header: BlockHeader,
+	/// List of transaction inputs
+	pub inputs: Vec<Input>,
+	/// List of transaction outputs
+	pub outputs: Vec<Output>,
+	/// List of kernels with associated proofs (note these are offset from
+	/// tx_kernels)
+	pub kernels: Vec<TxKernel>,
+}
+```
 1. Сначала осуществляется попытка присоединить блок к блокчейну, для этого:
 	- проверяется есть ли данный блок уже в цепочке блокчейна;
 	- проводится валидация BlockHeader'а данного блока;
@@ -91,6 +104,34 @@ struct Tip {
 
 
 ## Как заголовки (BlockHeader'ы) присоединяются к блокчейну?
+```rust
+pub struct BlockHeader {
+	/// Version of the block
+	pub version: u16,
+	/// Height of this block since the genesis block (height 0)
+	pub height: u64,
+	/// Hash of the block previous to this in the chain.
+	pub previous: Hash,
+	/// Timestamp at which the block was built.
+	pub timestamp: time::Tm,
+	/// Merklish root of all the commitments in the TxHashSet
+	pub output_root: Hash,
+	/// Merklish root of all range proofs in the TxHashSet
+	pub range_proof_root: Hash,
+	/// Merklish root of all transaction kernels in the TxHashSet
+	pub kernel_root: Hash,
+	/// Nonce increment used to mine this block.
+	pub nonce: u64,
+	/// Proof of work data.
+	pub pow: Proof,
+	/// Total accumulated difficulty since genesis block
+	pub total_difficulty: Difficulty,
+	/// Total accumulated sum of kernel offsets since genesis block.
+	/// We can derive the kernel offset sum for *this* block from
+	/// the total kernel offset of the previous block header.
+	pub total_kernel_offset: BlindingFactor,
+}
+```
 1. Осуществляется обработка BlockHeader'а:
 	- по хэшу заголовка проверятся есть ли данный заголовок уже в цепочке BlockHeader'ов блокчейна;
 	- происходит валидация заголовка.
