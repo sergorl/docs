@@ -61,9 +61,9 @@ struct Tip {
 
 #### Chain предоставляет следующие методы для обработки блокчейна:
 - Существует ли блокчейн в БД rocksdb?
-```rustpub fn chain_exists(db_root: String) -> bool;```
+```rust pub fn chain_exists(db_root: String) -> bool;```
 
-- Создает хранилище типа "ключ-значение", внутри которого находятся: 
+- Создает хранилище типа "ключ-значение" с попмощю genesis-блока, внутри которого находятся: 
 1. Thread-safe rocksdb wrapper
 ```rust pub struct Store {
 	rdb: RwLock<DB>,
