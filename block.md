@@ -16,6 +16,36 @@ pub struct Block {
 }
 ```
 
+
+**TxKernel** - cтруктура, содержащая доказательство равенства суммы входов и суммы выходов:
+```rust
+pub struct TxKernel {
+	/// Options for a kernel's structure or use
+	pub features: KernelFeatures,
+
+	/// Options for a kernel's structure or use
+	pub struct KernelFeatures: u8 {
+		/// No flags
+		const DEFAULT_KERNEL = 0b00000000;
+		/// Kernel matching a coinbase output
+		const COINBASE_KERNEL = 0b00000001;
+	}
+
+	/// Fee originally included in the transaction this proof is for.
+	pub fee: u64,
+	/// This kernel is not valid earlier than lock_height blocks
+	/// The max lock_height of all *inputs* to this transaction
+	pub lock_height: u64,
+	/// Remainder of the sum of all transaction commitments. If the transaction
+	/// is well formed, amounts components should sum to zero and the excess
+	/// is hence a valid public key.
+	pub excess: Commitment,
+	/// The signature proving the excess is a valid public key, which signs
+	/// the transaction fee.
+	pub excess_sig: Signature,
+}
+```
+
 Заголовок блока:
 ```rust
 pub struct BlockHeader {
@@ -46,7 +76,7 @@ pub struct BlockHeader {
 }
 ```
 
-2. Компактсная форма:
+2. Компактная форма:
 ```rust
 pub struct CompactBlock {
 	/// The header with metadata and commitments to the rest of the data
@@ -66,3 +96,9 @@ pub struct CompactBlock {
 /// Формируется из хэша заголовка и его поля nonce с применением SipHash-функции 
 pub struct ShortId([u8; 6]);
 ```
+
+**Компактная форма** может быть получена из обычной формы следующим образом:
+	- cохраняются только outputs, содержащие OutputFeatures::COINBASE_OUTPUT для формирования списка Vec<Output>;
+	- сохраняются только kernels, содержащие KernelFeatures::COINBASE_KERNEL для формирования списка Vec<TxKernel>;
+	- генерируется случайное число nonce (оно используется для формирования ShortId из kernels, неподходящих под описание выше)	
+	- kernels, не содержащие KernelFeatures::COINBASE_KERNEL заменются ShortId, формируя список Vec<ShortId>
