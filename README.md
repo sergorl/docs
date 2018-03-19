@@ -1,14 +1,14 @@
 # docs
 simple docs
 
-Just code snippet:
+Блок, который не имеет известного предка в самой длинной цепочке блоков:
 
 ```rust
-struct PMMRHandle<T>
-where
-	T: PMMRable,
-{
-	backend: PMMRBackend<T>,
-	last_pos: u64,
+/// 
+#[derive(Debug, Clone)]
+struct Orphan {
+	block: Block,
+	opts:  Options,
+	added: Instant,
 }
 ```
