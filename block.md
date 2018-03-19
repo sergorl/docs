@@ -63,6 +63,6 @@ pub struct CompactBlock {
 }
 
 /// 6-битный ключ для идентификации inputs/outputs/kernels
-/// Формируется из хэша заголовка и его поля nonce на основе SipHash-функции 
+/// Формируется из хэша заголовка и его поля nonce с применением SipHash-функции 
 pub struct ShortId([u8; 6]);
 ```
