@@ -128,6 +128,31 @@ output_len * BLOCK_OUTPUT_WEIGHT +
 kernel_len * BLOCK_KERNEL_WEIGHT > MAX_BLOCK_WEIGHT || input_len > MAX_BLOCK_INPUTS
 ```
 2. Проверка порядка сортировки списков inputs/outputs/kernels.
-3. Верификация Coinbase - проверка, что сумма всех BlindingFactor'ов выходов транзакций, содержащих OutputFeatures::COINBASE_OUTPUT, равна сумме всех kernel'ов, содержащих KernelFeatures::COINBASE_KERNEL.
-4. 
+3. Верификация Coinbase:
+проверяется, что сумма всех BlindingFactor'ов выходов транзакций, содержащих OutputFeatures::COINBASE_OUTPUT, равна сумме всех kernel'ов, содержащих KernelFeatures::COINBASE_KERNEL.
+4. Верификация входов: 
+ для каждого входа, содержащего OutputFeatures::COINBASE_OUTPU, верифицируется его MerkleProof.
+```rust
+/// A Merkle proof.
+/// Proves inclusion of an output (node) in the output MMR.
+/// We can use this to prove an output was unspent at the time of a given block
+/// as the root will match the output_root of the block header.
+/// The path and left_right can be used to reconstruct the peak hash for a given tree
+/// in the MMR.
+/// The root is the result of hashing all the peaks together.
+pub struct MerkleProof {
+	/// The root hash of the full Merkle tree (in an MMR the hash of all peaks)
+	pub root: Hash,
+	/// The hash of the element in the tree we care about
+	pub node: Hash,
+	/// The full list of peak hashes in the MMR
+	pub peaks: Vec<Hash>,
+	/// The siblings along the path of the tree as we traverse from node to peak
+	pub path: Vec<Hash>,
+	/// Order of siblings (left vs right) matters, so track this here for each
+	/// path element
+	pub left_right: Vec<bool>,
+}
+```
+
 
