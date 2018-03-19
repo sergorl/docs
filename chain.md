@@ -10,7 +10,7 @@ struct Orphan {
 }
 ```
 
-### Пул Orphan'ов:
+#### Пул Orphan'ов:
 - блоки хранятся в HashMap по хэшу Orphan'a и защищены [RwLock](https://doc.rust-lang.org/std/sync/struct.RwLock.html)
 - связь родитель-ребёнок осуществлена через HashMap<Hash, Hash, защищенную [RwLock](https://doc.rust-lang.org/std/sync/struct.RwLock.html) где, Hash - хэш блока
 ```rust
@@ -23,7 +23,7 @@ struct OrphanBlockPool {
 }
 ```
 
-### Chain - cтруктура для хранения и обработки блокчейнов, содержит
+#### Chain - cтруктура для хранения и обработки блокчейнов, содержит
 - вершину блокчейна **Tip** 
 - пул орфанов
 - функцию проверки PoW
@@ -41,7 +41,7 @@ struct Chain {
 	pow_verifier: fn(&BlockHeader, u32) -> bool,
 }
 ```
-### Tip - вершина блокчейна, содержит:
+#### Tip - вершина блокчейна, содержит:
 - хэши последнего и предпоследнего блоков
 - высоту (длину) блокчейна
 - общую сложность блокчейна
@@ -57,6 +57,6 @@ struct Tip {
 	pub total_difficulty: Difficulty,
 }
 ```	
-### Chain предоставляет следующие методы для обработки блокчейна:
+#### Chain предоставляет следующие методы для обработки блокчейна:
 - Существует ли блокчейн в БД rocksdb?
 ```rustpub fn chain_exists(db_root: String) -> bool;```
