@@ -41,8 +41,8 @@ struct Chain {
 	pow_verifier: fn(&BlockHeader, u32) -> bool,
 }
 ```
-```rust
 Вершина блокчейна **Tip**:
+```rust
 struct Tip {
 	/// Height of the tip (max height of the fork)
 	pub height:          u64,
