@@ -1,4 +1,4 @@
-Just soce snippet:
+Just code snippet:
 
 	struct PMMRHandle<T>
 	where
