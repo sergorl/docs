@@ -4,7 +4,20 @@ Orphan — это блок, который не имеет известного 
 #[derive(Debug, Clone)]
 struct Orphan {
 	block: Block,
-	opts:  Options, // 
-	added: Instant, // время создания
+	opts:  Options, // ???
+	added: Instant, // время присоединения в пул Orphan'ов
 }
 ```
+
+Пул Orphan'ов:
+- блоки хранятся в HashMap по хэшу Orphan'a и защищены [RwLock](https://doc.rust-lang.org/std/sync/struct.RwLock.html)
+- связь родитель-ребёнок осуществлена через HashMap<Hash, Hash, защищенную [RwLock](https://doc.rust-lang.org/std/sync/struct.RwLock.html) где, Hash - хэш блока
+```rust
+struct OrphanBlockPool {
+	// blocks indexed by their hash
+	orphans: RwLock<HashMap<Hash, Orphan>>,
+	// additional index of previous -> hash
+	// so we can efficiently identify a child block (ex-orphan) after processing a block
+	prev_idx: RwLock<HashMap<Hash, Hash>>,
+}
+```rust
