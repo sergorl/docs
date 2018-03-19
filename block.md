@@ -1,7 +1,7 @@
 
 ## Структура блока блокчейна
 
-1. Полная форма блока:
+1. Нормальная полная форма блока:
 ```rust
 pub struct Block {
 	/// The header with metadata and commitments to the rest of the data
@@ -97,8 +97,11 @@ pub struct CompactBlock {
 pub struct ShortId([u8; 6]);
 ```
 
-**Компактная форма** может быть получена из обычной формы следующим образом:
-	- cохраняются только outputs, содержащие OutputFeatures::COINBASE_OUTPUT для формирования списка Vec<Output>;
-	- сохраняются только kernels, содержащие KernelFeatures::COINBASE_KERNEL для формирования списка Vec<TxKernel>;
-	- генерируется случайное число nonce (оно используется для формирования ShortId из kernels, неподходящих под описание выше);
-	- kernels, не содержащие KernelFeatures::COINBASE_KERNEL заменются ShortId, формируя список Vec<ShortId>.
+**Компактная форма** может быть получена из **нормальной формы** следующим образом:
+- cохраняются только outputs, содержащие OutputFeatures::COINBASE_OUTPUT для формирования списка Vec<Output>;
+- сохраняются только kernels, содержащие KernelFeatures::COINBASE_KERNEL для формирования списка Vec<TxKernel>;
+- генерируется случайное число nonce (оно используется для формирования ShortId из kernels, неподходящих под описание выше);
+- kernels, не содержащие KernelFeatures::COINBASE_KERNEL заменются ShortId, формируя список Vec<ShortId>.
+Все cписки outputs/kernels/kern_ids хранятся в отсортированном лексикографическом порядке.
+	
+**Нормальная форма** может быть получена из блока **компактной формы**, прошедшего успешно валидацию, и некоторого списка транзакций, та как в этом случае при формироdfнии нового блока из блока компактной формы ипользуется только заголовок BlocHeader.
