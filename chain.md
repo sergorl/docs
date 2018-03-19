@@ -21,7 +21,7 @@ struct OrphanBlockPool {
 	// so we can efficiently identify a child block (ex-orphan) after processing a block
 	prev_idx: RwLock<HashMap<Hash, Hash>>,
 }
-```rust
+```
 
 **Chain** - cтруктура для хранения и обработки блокчейнов, содержит
 - вершину блокчейна **Tip** 
@@ -40,8 +40,9 @@ struct Chain {
 	// POW verification function
 	pow_verifier: fn(&BlockHeader, u32) -> bool,
 }
+```
 ```rust
-```rust
+Вершина блокчейна **Tip**:
 struct Tip {
 	/// Height of the tip (max height of the fork)
 	pub height:          u64,
@@ -52,4 +53,4 @@ struct Tip {
 	/// Total difficulty accumulated on that fork
 	pub total_difficulty: Difficulty,
 }
-```rust	
+```	
