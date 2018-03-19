@@ -1,7 +1,7 @@
 
 ## Структура блока блокчейна
 
-1. Нормальная полная форма блока:
+1. **Нормальная** полная форма блока:
 ```rust
 pub struct Block {
 	/// The header with metadata and commitments to the rest of the data
@@ -46,7 +46,7 @@ pub struct TxKernel {
 }
 ```
 
-Заголовок блока:
+**Заголовок** блока:
 ```rust
 pub struct BlockHeader {
 	/// Version of the block
@@ -76,7 +76,7 @@ pub struct BlockHeader {
 }
 ```
 
-2. Компактная форма:
+2. **Компактная** форма:
 ```rust
 pub struct CompactBlock {
 	/// The header with metadata and commitments to the rest of the data
