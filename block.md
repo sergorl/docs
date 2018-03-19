@@ -127,4 +127,7 @@ input_len  * BLOCK_INPUT_WEIGHT  +
 output_len * BLOCK_OUTPUT_WEIGHT +
 kernel_len * BLOCK_KERNEL_WEIGHT > MAX_BLOCK_WEIGHT || input_len > MAX_BLOCK_INPUTS
 ```
+2. Проверка порядка сортировки списков inputs/outputs/kernels.
+3. Верификация Coinbase - проверка, что сумма всех BlindingFactor'ов выходов транзакций, содержащих OutputFeatures::COINBASE_OUTPUT, равна сумме всех kernel'ов, содержащих KernelFeatures::COINBASE_KERNEL.
+4. 
 
