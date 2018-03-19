@@ -59,23 +59,29 @@ struct Tip {
 }
 ```	
 
-#### Chain предоставляет следующие методы для обработки блокчейна:
+## Chain предоставляет следующие методы для обработки блокчейна:
 - Существует ли блокчейн в БД rocksdb?
-```rust pub fn chain_exists(db_root: String) -> bool;```
+```rust 
+pub fn chain_exists(db_root: String) -> bool;
+```
 
 - Создает хранилище типа "ключ-значение" с попмощю genesis-блока, внутри которого находятся: 
 1. Thread-safe rocksdb wrapper
-```rust pub struct Store {
+```rust 
+pub struct Store {
 	rdb: RwLock<DB>,
-}```
+}
+```
 2. три PMMR-дерева (внутри TxHashSet):
 	* PMMRHandle<OutputStoreable>     
 	* PMMRHandle<RangeProof>
 	* PMMRHandle<TxKernel>	
 3. односвязный список блоков блокчейна				 
-```rust pub fn init(
+```rust
+pub fn init(
 	db_root:      String,
 	adapter:      Arc<ChainAdapter>, 
 	genesis:      Block,
 	pow_verifier: fn(&BlockHeader, u32) -> bool,
-) -> Result<Chain, Error>; ```
+) -> Result<Chain, Error>; 
+```
