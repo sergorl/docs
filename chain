@@ -1,30 +1,11 @@
+Just soce snippet:
 
-struct PMMRHandle<T>
-where
-	T: PMMRable,
-{
-	backend: PMMRBackend<T>,
-	last_pos: u64,
-}
+	struct PMMRHandle<T>
+	where
+		T: PMMRable,
+	{
+		backend: PMMRBackend<T>,
+		last_pos: u64,
+	}
 
-/// PMMR persistent backend implementation. Relies on multiple facilities to
-/// handle writing, reading and pruning.
-///
-/// * A main storage file appends Hash instances as they come. This
-/// AppendOnlyFile is also backed by a mmap for reads.
-/// * An in-memory backend buffers the latest batch of writes to ensure the
-/// PMMR can always read recent values even if they haven't been flushed to
-/// disk yet.
-/// * A remove log tracks the positions that need to be pruned from the
-/// main storage file.
-pub struct PMMRBackend<T>
-where
-	T: PMMRable,
-{
-	data_dir: String,
-	hash_file: AppendOnlyFile,  // ???
-	data_file: AppendOnlyFile,  // ???
-	rm_log: RemoveLog,
-	pruned_nodes: pmmr::PruneList,
-	phantom: PhantomData<T>,
-}
+
