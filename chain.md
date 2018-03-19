@@ -60,12 +60,20 @@ struct Tip {
 ```	
 
 ## Chain предоставляет следующие методы для обработки блокчейна:
-- Существует ли блокчейн в БД rocksdb?
 ```rust 
 pub fn chain_exists(db_root: String) -> bool;
 ```
+- Существует ли блокчейн в БД rocksdb?
 
-- Создает хранилище типа "ключ-значение" с попмощю genesis-блока, внутри которого находятся: 
+```rust
+pub fn init(
+	db_root:      String,
+	adapter:      Arc<ChainAdapter>, 
+	genesis:      Block,
+	pow_verifier: fn(&BlockHeader, u32) -> bool,
+) -> Result<Chain, Error>; 
+```
+- Создает хранилище типа "ключ-значение" с попмощью genesis-блока, внутри которого находятся: 
 1. Thread-safe rocksdb wrapper
 ```rust 
 pub struct Store {
@@ -77,11 +85,13 @@ pub struct Store {
 	* PMMRHandle<RangeProof>
 	* PMMRHandle<TxKernel>	
 3. односвязный список блоков блокчейна				 
+
 ```rust
-pub fn init(
-	db_root:      String,
-	adapter:      Arc<ChainAdapter>, 
-	genesis:      Block,
-	pow_verifier: fn(&BlockHeader, u32) -> bool,
-) -> Result<Chain, Error>; 
-```
+pub fn process_block(
+	&self,
+	b:      Block,
+	opts:   Options,
+) -> Result<(Option<Tip>, Option<Block>), Error>;
+```	
+- Присоединяет новый блок и в случае успеха проверяет есть ли воможные для присоединения блоки в OrphanBlockPool
+- Обновляет вершину блокчейна	
