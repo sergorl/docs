@@ -120,5 +120,11 @@ pub struct ShortId([u8; 6]);
 5. фиксируется время создания блока.
 
 ## Валидация блока
-
+Происходит поэтапно:
+1. Проверяется превышает ли вес блока некторое константное значение через предикат:
+```rust
+input_len  * BLOCK_INPUT_WEIGHT  + 
+output_len * BLOCK_OUTPUT_WEIGHT +
+kernel_len * BLOCK_KERNEL_WEIGHT > MAX_BLOCK_WEIGHT || input_len > MAX_BLOCK_INPUTS
+```
 
