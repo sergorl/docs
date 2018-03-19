@@ -100,5 +100,5 @@ pub struct ShortId([u8; 6]);
 **Компактная форма** может быть получена из обычной формы следующим образом:
 	- cохраняются только outputs, содержащие OutputFeatures::COINBASE_OUTPUT для формирования списка Vec<Output>;
 	- сохраняются только kernels, содержащие KernelFeatures::COINBASE_KERNEL для формирования списка Vec<TxKernel>;
-	- генерируется случайное число nonce (оно используется для формирования ShortId из kernels, неподходящих под описание выше)	
-	- kernels, не содержащие KernelFeatures::COINBASE_KERNEL заменются ShortId, формируя список Vec<ShortId>
+	- генерируется случайное число nonce (оно используется для формирования ShortId из kernels, неподходящих под описание выше);
+	- kernels, не содержащие KernelFeatures::COINBASE_KERNEL заменются ShortId, формируя список Vec<ShortId>.
