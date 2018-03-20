@@ -19,6 +19,11 @@ pub struct Block {
 
 **TxKernel** - cтруктура, содержащая доказательство равенства суммы нулю:
 ```rust
+/// A proof that a transaction sums to zero. Includes both the transaction's
+/// Pedersen commitment and the signature, that guarantees that the commitments
+/// amount to zero.
+/// The signature signs the fee and the lock_height, which are retained for
+/// signature validation.
 pub struct TxKernel {
 	/// Options for a kernel's structure or use
 	pub features: KernelFeatures,
