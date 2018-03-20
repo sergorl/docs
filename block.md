@@ -17,7 +17,7 @@ pub struct Block {
 ```
 
 
-**TxKernel** - cтруктура, содержащая доказательство равенства суммы входов и суммы выходов транзакции:
+**TxKernel** - cтруктура, содержащая доказательство равенства суммы нулю:
 ```rust
 pub struct TxKernel {
 	/// Options for a kernel's structure or use
