@@ -98,8 +98,8 @@ pub struct ShortId([u8; 6]);
 ```
 
 **Компактная форма** может быть получена из **нормальной формы** следующим образом:
-- cохраняются только outputs, содержащие OutputFeatures::COINBASE_OUTPUT для формирования списка Vec<Output>;
-- сохраняются только kernels, содержащие KernelFeatures::COINBASE_KERNEL для формирования списка Vec<TxKernel>;
+- cохраняются только outputs, содержащие OutputFeatures::COINBASE_OUTPUT для формирования списка из Output'ов;
+- сохраняются только kernels, содержащие KernelFeatures::COINBASE_KERNEL для формирования списка TxKernel'ов;
 - генерируется случайное число nonce (оно используется для формирования ShortId из kernels, неподходящих под описание выше);
 - kernels, не содержащие KernelFeatures::COINBASE_KERNEL заменются ShortId, формируя список Vec<ShortId>.
 Все cписки outputs/kernels/kern_ids хранятся в отсортированном лексикографическом порядке.
@@ -112,6 +112,7 @@ pub struct ShortId([u8; 6]);
 - некоторого списка транзакций,
 - некоторого Output'a и соотвествующего ему TxKernel'a,
 - и некоторого парамера сложности Difficulty.
+
 В процессе создании нового блока:
 1. каждая транзакция валидируется и в случае успеха помещается внутрь блока (заполняя соответствующие поля-списки inputs/outputs/kernels в лексикографическом порядке);
 2. а BlindingFactor'ы соответствующих транзакций суммируются и помещаются в заголовок блока total_kernel_offset;
@@ -131,7 +132,7 @@ kernel_len * BLOCK_KERNEL_WEIGHT > MAX_BLOCK_WEIGHT || input_len > MAX_BLOCK_INP
 3. Верификация Coinbase:
 проверяется, что сумма всех BlindingFactor'ов выходов транзакций, содержащих OutputFeatures::COINBASE_OUTPUT, равна сумме всех kernel'ов, содержащих KernelFeatures::COINBASE_KERNEL.
 4. Верификация входов: 
- для каждого входа, содержащего OutputFeatures::COINBASE_OUTPU, верифицируется его MerkleProof.
+для каждого входа, содержащего OutputFeatures::COINBASE_OUTPUT, верифицируется его MerkleProof. Верификация по MerkleProof осуществляется через поиск хэша в MMR-дереве хэшей всех Output'ов. И если данный хэш есть в MMR-дереве, то верификация считается успешной.
 ```rust
 /// The Merkle Proof that shows the output being spent by this input
 /// existed and was unspent at the time of this block (proof of inclusion in output_root)
