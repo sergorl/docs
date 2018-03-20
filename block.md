@@ -17,7 +17,7 @@ pub struct Block {
 ```
 
 
-**TxKernel** - cтруктура, содержащая доказательство равенства суммы нулю:
+**TxKernel** - cтруктура, содержащая доказательство [сумма входов] - fee - [сумма выходов] - reminder = 0:
 ```rust
 /// A proof that a transaction sums to zero. Includes both the transaction's
 /// Pedersen commitment and the signature, that guarantees that the commitments
