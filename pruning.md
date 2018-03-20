@@ -32,6 +32,29 @@
 ## Merkle Proof
 ***Merkle Proof*** - процедура проверки наличия узла в **MMR-дереве**.
 
+```rust
+/// A Merkle proof.
+/// Proves inclusion of an output (node) in the output MMR.
+/// We can use this to prove an output was unspent at the time of a given block
+/// as the root will match the output_root of the block header.
+/// The path and left_right can be used to reconstruct the peak hash for a given tree
+/// in the MMR.
+/// The root is the result of hashing all the peaks together.
+pub struct MerkleProof {
+	/// The root hash of the full Merkle tree (in an MMR the hash of all peaks)
+	pub root: Hash,
+	/// The hash of the element in the tree we care about
+	pub node: Hash,
+	/// The full list of peak hashes in the MMR
+	pub peaks: Vec<Hash>,
+	/// The siblings along the path of the tree as we traverse from node to peak
+	pub path: Vec<Hash>,
+	/// Order of siblings (left vs right) matters, so track this here for each
+	/// path element
+	pub left_right: Vec<bool>,
+}
+```
+
 **Pruning** полезен для **Merkle Proof**, так как позволяет устранить избыточность узлов в **MMR-дереве**, то есть удалить узлы, которые не участвуют в процедуре, повысив эффективность проверки. 
 
 Расмотрим алгоритм **Merkle Proof** в **PMMR-дереве**. Данный алгоритм проверки описан в в строчках [208-251](https://github.com/beam-mw/grin/blob/master/core/src/core/pmmr.rs) и является крайне НЕПОНЯТНЫМ, так как предполагет, что для каждого хэша внутри MerkleProof'а каждого входа транзакции хранятся известные для него узлы-братья и все пики. Сам алгоритм фактически состит их двух этапов:
