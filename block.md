@@ -101,7 +101,7 @@ pub struct ShortId([u8; 6]);
 - cохраняются только outputs, содержащие OutputFeatures::COINBASE_OUTPUT для формирования списка из Output'ов;
 - сохраняются только kernels, содержащие KernelFeatures::COINBASE_KERNEL для формирования списка TxKernel'ов;
 - генерируется случайное число nonce (оно используется для формирования ShortId из kernels, неподходящих под описание выше);
-- kernels, не содержащие KernelFeatures::COINBASE_KERNEL заменются ShortId, формируя список Vec<ShortId>.
+- kernels, не содержащие KernelFeatures::COINBASE_KERNEL заменются ShortId, формируя список из ShortId.
 Все cписки outputs/kernels/kern_ids хранятся в отсортированном лексикографическом порядке.
 	
 **Нормальная форма** может быть получена из блока **компактной формы**, но успешно прошедшего валидацию, и некоторого списка транзакций, та как в этом случае при формировании нового блока из блока компактной формы ипользуется только заголовок BlocHeader.
