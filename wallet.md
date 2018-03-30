@@ -39,8 +39,7 @@ pub struct OutputData {
 	- Генерирует случайный **kernel_offset** 
 	- Создаёт **BlindSum** 
 	- **blind_offset = BlindSum + BlindingFactor - kernel_offset**
-	- выполняет какие-то проверки для **blind_offset** и :
-	
+	- выполняет какие-то проверки для **blind_offset** и :	
 ```rust
 // Create a new aggsig context
 	let tx_id = Uuid::new_v4();
@@ -53,7 +52,6 @@ pub struct OutputData {
 ```
 
 3. Создаёт квазитранзакцию **PartialTx**
-
 ```rust
 /// Helper in serializing the information required during an interactive aggsig
 /// transaction
@@ -69,3 +67,14 @@ pub struct PartialTx {
 	pub tx: String,
 }
 ```
+4. Отправляет квазитранзакцию **PartialTx** кошельку **B** по **http**-протоколу и ждёт ответа:
+Кошелёк **A** выбрасывает ошибку: 
+	- в случае неудачи при установлении соединения между кошельками 
+	- в случае превышения награды **fee** количества предеавемых монет
+Кошелёк **A** получает ответ и из него вычитвает
+	- транзакцию
+	- количестов предаваемых монет
+	- два публичных ключа **PublicKey**
+	- **BlindingFactor**
+	- 
+
