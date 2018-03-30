@@ -6,6 +6,8 @@
   	- транзакцию
  	- **BlindingFactor**
  	- выходы транзакций **OutputData**
+	- change_key
+        - число пересылаемых монет + вознаграждение fee
   
 ```rust
 /// Information about an output that's being tracked by the wallet. Must be
@@ -34,8 +36,5 @@ pub struct OutputData {
 	pub merkle_proof: Option<MerkleProofWrapper>,
 }
 ```
-
-   - change_key
-   - число пересылаемых монет + вознаграждение fee
-
+       
 2. 
