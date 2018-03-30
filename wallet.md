@@ -7,7 +7,7 @@
  	- **BlindingFactor**
  	- выходы транзакций **OutputData**
 	- change_key
-        - число пересылаемых монет + вознаграждение fee
+        - число пересылаемых монет плюс вознаграждение **fee**
   
 ```rust
 /// Information about an output that's being tracked by the wallet. Must be
