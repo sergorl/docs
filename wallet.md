@@ -2,10 +2,10 @@
 ## Взаимодействие кошельков
 
 ### Сценарий №1. Кошелёк ***A*** посылает транзакцию кошельку ***B***
-1. Кошелёк ***A*** на своей  стороне фоимрует:
-  - транзакцию
-  - BlindingFactor
-  - выходы траназкций OutputData
+1. Кошелёк ***A*** на своей стороне формирует:
+  	- транзакцию
+ 	 - BlindingFactor
+ 	 - выходы транзакций OutputData
   
 ```rust
 /// Information about an output that's being tracked by the wallet. Must be
@@ -35,7 +35,7 @@ pub struct OutputData {
 }
 ```
 
-  - change_key
-  - число пересылаемых монет + вознаграждение fee
+  	- change_key
+ 	- число пересылаемых монет + вознаграждение fee
 
 2. 
