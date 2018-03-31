@@ -37,7 +37,7 @@ pub enum PartialTxPhase {
  	- **BlindingFactor**;
  	- выходы транзакций **OutputData**, содержащие необходимое количество монет;
 	- количество пересылаемых монет **+** вознаграждение **fee**;
-	- [**Identifier change_key**](https://github.com/beam-mw/grin/blob/master/keychain/src/extkey.rs).
+	- [Identifier](https://github.com/beam-mw/grin/blob/master/keychain/src/extkey.rs) change_key.
 
 ```rust
 pub struct OutputData {
@@ -101,7 +101,18 @@ pub struct OutputData {
 - кошелёк **A** получает ответ и вычитывает (десериализует) из него:
     - транзакцию;
     - количество пересылаемых монет;
-    - два публичных ключа  **pub_excess и pub_nonce**, ;
-    - **BlindingFactor**
-    - 
+    - два публичных ключа  **recp_pub_blinding** и **recp_pub_nonce** типа **PublicKey**, полученных от кошелька ***B***;
+    - **BlindingFactor kernel_offset**;
+    - сигнатуру **Signature**.
+    
+5. Верифицирует сигнатуру, полученную на предыщуем шаге от кошелька ***B***. В случае неуспеха кошелёк ***A*** завершает взаимодействие с кошельком ***B***. 
+
+6. Кошелёк ***A*** создаёт свою сигнатуру, используя:
+    - **UUID** транзакции;
+    - **recp_pub_nonce**, полученный от кошелька ***B*** на предыдущем шаге;
+    - вознаграждение **fee** (используется как сообщение, которое подписывают);
+    - **lock_height**.
+
+7. Кошелёк ***A*** создаёт новый котейнер **PartialTx** уже с флагом **PartialTxPhase::SenderConfirmation** и кладёт внутрь него сигнатуру, полученную на предыдущем шаге.
+    
 
