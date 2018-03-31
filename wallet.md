@@ -33,11 +33,11 @@ pub enum PartialTxPhase {
 ### Рассмотрим процесс формирования выходов тразакции в сценарии "кошелёк ***A*** пересылает монеты кошельку ***B***"
 
 1. Кошелёк ***A*** на своей стороне формирует:
-  	- транзакцию,
- 	- **BlindingFactor**,
- 	- выходы транзакций **OutputData**, содержащие необходимое количестов монет;
+  	- непосредственно саму транзакцию;
+ 	- **BlindingFactor**;
+ 	- выходы транзакций **OutputData**, содержащие необходимое количество монет;
 	- количество пересылаемых монет **+** вознаграждение **fee**;
-	- **Identifier change_key**.
+	- [**Identifier change_key**](https://github.com/beam-mw/grin/blob/master/keychain/src/extkey.rs).
 
 ```rust
 pub struct OutputData {
