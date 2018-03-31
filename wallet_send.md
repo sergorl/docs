@@ -61,7 +61,7 @@ pub struct OutputData {
 	pub merkle_proof: Option<MerkleProofWrapper>,
 }
 ``` 
-Выход транзакции **OutputData** содержит поле-флаг **OutputStatus**:
+Выход транзакции **OutputData** содержит поле-флаг **OutputStatus** о статусе выхода транзакции:
 
 ```rust
 /// Status of an output that's being tracked by the wallet. Can either be
