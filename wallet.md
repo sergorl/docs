@@ -6,7 +6,6 @@
 ```rust
 /// Helper in serializing the information required during an interactive aggsig
 /// transaction
-#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PartialTx {
 	pub phase: PartialTxPhase,
 	pub id: Uuid,
