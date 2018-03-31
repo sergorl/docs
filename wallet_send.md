@@ -34,7 +34,7 @@ pub enum PartialTxPhase {
 1. Кошелёк ***A*** на своей стороне формирует:
   	- непосредственно саму транзакцию;
  	- **BlindingFactor**;
- 	- выходы транзакции **OutputData**, содержащие необходимое количество монет;
+ 	- выходы транзакций **OutputData**, содержащие необходимое количество монет;
 	- количество пересылаемых монет **+** вознаграждение **fee**;
 	- [Identifier](https://github.com/beam-mw/grin/blob/master/keychain/src/extkey.rs) **change_key**.
 
