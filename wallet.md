@@ -1,13 +1,32 @@
 
-## Взаимодействие кошельков
+## Сценарий №1. Кошелёк ***A*** посылает транзакцию кошельку ***B***
 
-### Сценарий №1. Кошелёк ***A*** посылает транзакцию кошельку ***B***
+Взаимодействие кошельков строится на основе передачи/приёма контейнера **PartialTx** по ***http***-протоколу. Основная часть контейнера содержит непосредственно саму транзакцию и криптографические параметры (сигнатуру, blind_excess, nonce, kernel_offset):
+
+	``rust
+	/// Helper in serializing the information required during an interactive aggsig
+	/// transaction
+	#[derive(Serialize, Deserialize, Debug, Clone)]
+	pub struct PartialTx {
+		pub phase: PartialTxPhase,
+		pub id: Uuid,
+		pub amount: u64,
+		pub public_blind_excess: String,
+		pub public_nonce: String,
+		pub kernel_offset: String,
+		pub part_sig: String,
+		pub tx: String,
+	}
+	```
+
+
+
 1. Кошелёк ***A*** на своей стороне формирует:
   	- транзакцию
  	- **BlindingFactor**
  	- выходы транзакций **OutputData**       	
-	- число пересылаемых монет плюс вознаграждение **fee**
-	- **change_key**
+	- количество пересылаемых монет **+** вознаграждение **fee**
+	- **change_key** типа 
  ```rust
 /// Information about an output that's being tracked by the wallet. Must be
 /// enough to reconstruct the commitment associated with the ouput when the
@@ -52,29 +71,15 @@ pub struct OutputData {
 ```
 
 3. Создаёт квазитранзакцию **PartialTx**
-```rust
-/// Helper in serializing the information required during an interactive aggsig
-/// transaction
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct PartialTx {
-	pub phase: PartialTxPhase,
-	pub id: Uuid,
-	pub amount: u64,
-	pub public_blind_excess: String,
-	pub public_nonce: String,
-	pub kernel_offset: String,
-	pub part_sig: String,
-	pub tx: String,
-}
-```
+`
 4. Отправляет квазитранзакцию **PartialTx** кошельку **B** по **http**-протоколу и ждёт ответа:
 Кошелёк **A** выбрасывает ошибку: 
-	- в случае неудачи при установлении соединения между кошельками 
-	- в случае превышения награды **fee** количества предеавемых монет
+    - в случае неудачи при установлении соединения между кошельками 
+    - в случае превышения награды **fee** количества предеавемых монет
 Кошелёк **A** получает ответ и из него вычитвает
-	- транзакцию
-	- количестов предаваемых монет
-	- два публичных ключа **PublicKey**
-	- **BlindingFactor**
-	- 
+    - транзакцию 
+    - количестов предаваемых монет
+    - два публичных ключа **PublicKey**
+    - **BlindingFactor**
+    - 
 
