@@ -3,23 +3,32 @@
 
 Взаимодействие кошельков строится на основе передачи/приёма контейнера **PartialTx** по ***http***-протоколу. Основная часть контейнера содержит непосредственно саму транзакцию и криптографические параметры (сигнатуру, blind_excess, nonce, kernel_offset):
 
-	``rust
-	/// Helper in serializing the information required during an interactive aggsig
-	/// transaction
-	#[derive(Serialize, Deserialize, Debug, Clone)]
-	pub struct PartialTx {
-		pub phase: PartialTxPhase,
-		pub id: Uuid,
-		pub amount: u64,
-		pub public_blind_excess: String,
-		pub public_nonce: String,
-		pub kernel_offset: String,
-		pub part_sig: String,
-		pub tx: String,
-	}
-	```
+```rust
+/// Helper in serializing the information required during an interactive aggsig
+/// transaction
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct PartialTx {
+	pub phase: PartialTxPhase,
+	pub id: Uuid,
+	pub amount: u64,
+	pub public_blind_excess: String,
+	pub public_nonce: String,
+	pub kernel_offset: String,
+	pub part_sig: String,
+	pub tx: String,
+}
+```
 
+Внутри контейнера есть флаг **PartialTxPhase**, который обозначает стадию процесса взаимодействия между двумя кошельками для формирования транзакции:
 
+```rust
+pub enum PartialTxPhase {
+	SenderInitiation,
+	ReceiverInitiation,
+	SenderConfirmation,
+	ReceiverConfirmation,
+}
+```
 
 1. Кошелёк ***A*** на своей стороне формирует:
   	- транзакцию
@@ -27,11 +36,8 @@
  	- выходы транзакций **OutputData**       	
 	- количество пересылаемых монет **+** вознаграждение **fee**
 	- **change_key** типа 
- ```rust
-/// Information about an output that's being tracked by the wallet. Must be
-/// enough to reconstruct the commitment associated with the ouput when the
-/// root private key is known.
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, PartialOrd, Eq, Ord)]
+
+```rust
 pub struct OutputData {
 	/// Root key_id that the key for this output is derived from
 	pub root_key_id: keychain::Identifier,
@@ -71,7 +77,8 @@ pub struct OutputData {
 ```
 
 3. Создаёт квазитранзакцию **PartialTx**
-`
+
+
 4. Отправляет квазитранзакцию **PartialTx** кошельку **B** по **http**-протоколу и ждёт ответа:
 Кошелёк **A** выбрасывает ошибку: 
     - в случае неудачи при установлении соединения между кошельками 
