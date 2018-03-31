@@ -37,7 +37,7 @@ pub enum PartialTxPhase {
  	- **BlindingFactor**;
  	- выходы транзакции **OutputData**, содержащие необходимое количество монет;
 	- количество пересылаемых монет **+** вознаграждение **fee**;
-	- [Identifier](https://github.com/beam-mw/grin/blob/master/keychain/src/extkey.rs) change_key.
+	- [Identifier](https://github.com/beam-mw/grin/blob/master/keychain/src/extkey.rs) **change_key**.
 
 ```rust
 pub struct OutputData {
@@ -131,7 +131,7 @@ pub enum OutputStatus {
 8. Далее кошелёк ***A*** отправляет новый контейнер **PartialTx** кошельку ***B*** и ждёт ответа:
 
     - в случае успеха кошелёк ***А*** блокирует выходы **OutputData**;
-    - в случае неудачи кошелёк ***А*** удаляет **OutputData** из списка выходов.
+    - ??? в случае неудачи кошелёк ***А*** удаляет выход **OutputData**, соответствующий **change_key**, из списка выходов.
 
     
 
