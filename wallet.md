@@ -35,7 +35,7 @@ pub enum PartialTxPhase {
 1. Кошелёк ***A*** на своей стороне формирует:
   	- непосредственно саму транзакцию;
  	- **BlindingFactor**;
- 	- выходы транзакций **OutputData**, содержащие необходимое количество монет;
+ 	- выход транзакции **OutputData**, содержащее необходимое количество монет;
 	- количество пересылаемых монет **+** вознаграждение **fee**;
 	- [Identifier](https://github.com/beam-mw/grin/blob/master/keychain/src/extkey.rs) change_key.
 
@@ -62,7 +62,20 @@ pub struct OutputData {
 	pub merkle_proof: Option<MerkleProofWrapper>,
 }
 ``` 
+Выход транзакции **OutputData** содержит поле-флаг **OutputStatus**:
 
+```rust
+/// Status of an output that's being tracked by the wallet. Can either be
+/// unconfirmed, spent, unspent, or locked (when it's been used to generate
+/// a transaction but we don't have confirmation that the transaction was
+/// broadcasted or mined).
+pub enum OutputStatus {
+	Unconfirmed,
+	Unspent,
+	Locked,
+	Spent,
+}
+```
 
 2. Осуществляет проверку дупликатов транзакции с помощью [Keychain](https://github.com/beam-mw/grin/blob/master/keychain/src/keychain.rs):
 	- генерирует случайный **kernel_offset**, используя **Keychain**;
@@ -113,6 +126,12 @@ pub struct OutputData {
     - вознаграждение **fee** (используется как сообщение, которое подписывают);
     - **lock_height**.
 
-7. Кошелёк ***A*** создаёт новый котейнер **PartialTx** уже с флагом **PartialTxPhase::SenderConfirmation** и кладёт внутрь него сигнатуру, полученную на предыдущем шаге.
+7. Кошелёк ***A*** создаёт новый котейнер **PartialTx** уже с флагом **PartialTxPhase::SenderConfirmation** и кладёт внутрь него свою сигнатуру, полученную на предыдущем шаге. 
+
+8. Далее кошелёк ***A*** отправляет новый контейнер **PartialTx** кошельку ***B*** и ждёт ответа:
+
+    - в случае успеха кошелёк ***А*** блокирует **OutputData**;
+    - в слачае неудачи кошелёк ***А*** удаляет **OutputData** из списка выходов.
+
     
 
