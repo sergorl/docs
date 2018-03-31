@@ -62,23 +62,31 @@ pub struct OutputData {
 	pub merkle_proof: Option<MerkleProofWrapper>,
 }
 ``` 
-2. Творит магию криптографии:
-	- Генерирует случайный **kernel_offset** 
-	- Создаёт **BlindSum** 
-	- **blind_offset = BlindSum + BlindingFactor - kernel_offset**
-	- выполняет какие-то проверки для **blind_offset** и :	
-```rust
-// Create a new aggsig context
-	let tx_id = Uuid::new_v4();
-	let skey = blind_offset
-		.secret_key(&keychain.secp())
-		.context(ErrorKind::Keychain)?;
-	keychain
-		.aggsig_create_context(&tx_id, skey)
-		.context(ErrorKind::Keychain)?;
-```
 
-3. Создаёт квазитранзакцию **PartialTx**
+
+2. Осуществляет проверку дупликатов транзакции с помощью [Keychain](https://github.com/beam-mw/grin/blob/master/keychain/src/keychain.rs):
+	- генерирует случайный **kernel_offset**, используя **Keychain**;
+	- cоздаёт [BlindSum](https://github.com/beam-mw/grin/blob/master/keychain/src/blind.rs);
+
+	```rust
+	/// Accumulator to compute the sum of blinding factors. Keeps track of each
+	/// factor as well as the "sign" with which they should be combined.
+	#[derive(Clone, Debug, PartialEq)]
+	pub struct BlindSum {
+		pub positive_key_ids: Vec<Identifier>,
+		pub negative_key_ids: Vec<Identifier>,
+		pub positive_blinding_factors: Vec<BlindingFactor>,
+		pub negative_blinding_factors: Vec<BlindingFactor>,
+	}
+	```
+	
+	- **blind_offset = BlindSum + BlindingFactor - kernel_offset**;
+	- используя **blind_offset** и **Keychain**, создаёт секретный ключ **skey**;
+	- создаёт [Uuid](https://ru.wikipedia.org/wiki/UUID) для идентификации будущей транзакции;
+	- используя  **skey** и **Uuid**, проверяет транзакцию на наличие дупликатов в контексте **Keychain**.
+
+
+3. Создаёт контейнер **PartialTx**:
 
 
 4. Отправляет квазитранзакцию **PartialTx** кошельку **B** по **http**-протоколу и ждёт ответа:
