@@ -23,3 +23,23 @@ fee = (tx_weight as u64) * use_base_fee
 
 Если оценка вознаграждения **fee** превышает количество пересылаемых монет **amount**, то кошелёк ***B*** также прекращает взаимодействие с кошельком ***B***, выбрасывая ошибку.
 
+3. Составляет выход будущей транзакции **OutputData** с идентификатором **Identifier key_id**:
+
+```rust
+OutputData {
+    root_key_id: root_key_id.clone(),
+    key_id: key_id.clone(),
+    n_child: derivation,
+    value: out_amount,
+    status: OutputStatus::Unconfirmed,
+    height: 0,
+    lock_height: 0,
+    is_coinbase: false,
+    block: None,
+    merkle_proof: None,
+}
+```
+
+Такой выход пока что имеет статус **неподтверждённого OutputStatus::Unconfirmed**, а также: 
+    - не ссылается ни на какой блок внутри блокчейна
+    - и не содержит **merkle_proof**.
