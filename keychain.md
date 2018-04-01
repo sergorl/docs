@@ -75,6 +75,10 @@ pub struct Keychain {
 }
 ```
 
+### BlindingFactor
+```rust
+pub struct BlindingFactor([u8; SECRET_KEY_SIZE]);
+```
 
 ### BlindSum
 **BlindSum** - 
