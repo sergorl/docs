@@ -74,3 +74,18 @@ pub struct Keychain {
 	key_derivation_cache: Arc<RwLock<HashMap<Identifier, u32>>>,
 }
 ```
+
+
+### BlindSum
+**BlindSum** - 
+
+```rust
+/// Accumulator to compute the sum of blinding factors. Keeps track of each
+/// factor as well as the "sign" with which they should be combined.
+pub struct BlindSum {
+	pub positive_key_ids: Vec<Identifier>,
+	pub negative_key_ids: Vec<Identifier>,
+	pub positive_blinding_factors: Vec<BlindingFactor>,
+	pub negative_blinding_factors: Vec<BlindingFactor>,
+}
+```
