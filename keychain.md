@@ -13,6 +13,7 @@ pub struct Identifier([u8; IDENTIFIER_SIZE]);
 ### ExtendedKey
 **ExtendedKey** - секретный ключ, но основе которого можно создавать множество других секретных ключей, используемых для сокрытия количества пересылаемых монет.
 
+```rust
 pub struct ExtendedKey {
 	/// Child number of the extended key
 	pub n_child: u32,
@@ -25,8 +26,9 @@ pub struct ExtendedKey {
 	/// The chain code for the key derivation chain
 	pub chain_code: [u8; 32],
 }
+```
 
 **ExtendedKey** генерируется из некоторого **seed**'a - для этого:
-   - используется **blake2b**-хештрования данного **seed**'a,
-   - а с помощью кривой **Secp256k1** из результата хэширования предыдущего шага формируется сам секретный ключ **ExtendedKey**.
+    - используется **blake2b**-хештрования данного **seed**'a,
+    - а с помощью кривой **Secp256k1** из результата хэширования предыдущего шага формируется сам секретный ключ **ExtendedKey**.
 
