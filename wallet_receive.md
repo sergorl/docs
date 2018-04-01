@@ -10,13 +10,13 @@
 2. Оценивает вознаграждение **fee** за транзакцию по формуле:   
 
 ```rust
-let mut tx_weight = -1 * (input_len as i32) + 4 * (output_len as i32) + 1;
+    let mut tx_weight = -1 * (input_len as i32) + 4 * (output_len as i32) + 1;
 
-if tx_weight < 1 {
-  tx_weight = 1;
-}
+    if tx_weight < 1 {
+      tx_weight = 1;
+    }
 
-fee = (tx_weight as u64) * use_base_fee
+    fee = (tx_weight as u64) * use_base_fee
 ```
 
 Если оценка **fee** на равна вознаграждению внутри самой транзакции **tx.fee()**, то кошелёк ***B*** прекращает взаимодействие с кошельком ***B***, выбрасывая ошибку.
