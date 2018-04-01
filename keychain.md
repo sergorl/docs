@@ -50,6 +50,7 @@ pub struct ChildKey {
 ### AggSigTxContext
 **AggSigTxContext** - контейнер для хранения идентификаторов всех созданных секретных ключей, используемых для сокрытия количества пересылаемых монет.
 
+```rust
 /// Holds internal information about an aggsig operation
 pub struct AggSigTxContext {
 	// Secret key (of which public is shared)
@@ -60,9 +61,11 @@ pub struct AggSigTxContext {
 	// If I'm the recipient, store my outputs between invocations (that I need to sum)
 	pub output_ids: Vec<Identifier>,
 }
+```
 
 ### Keychain
 **Keychain** - контейнер
+```rust
 pub struct Keychain {
 	secp: Secp256k1,
 	extkey: extkey::ExtendedKey,
@@ -70,3 +73,4 @@ pub struct Keychain {
 	key_overrides: HashMap<Identifier, SecretKey>,
 	key_derivation_cache: Arc<RwLock<HashMap<Identifier, u32>>>,
 }
+```
