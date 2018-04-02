@@ -1,11 +1,9 @@
 
 ## Сценарий №1. Кошелёк ***A*** пересылает монеты кошельку ***B***
 
-Взаимодействие кошельков строится на основе передачи/приёма контейнера **PartialTx** по ***http***-протоколу. Основная часть контейнера содержит непосредственно саму транзакцию и криптографические параметры (сигнатуру, blind_excess, nonce, kernel_offset):
+Взаимодействие кошельков строится на основе передачи/приёма контейнера **PartialTx** по ***http***-протоколу. Основная часть контейнера содержит непосредственно саму транзакцию и криптографические параметры (**сигнатуру, blind_excess, nonce, kernel_offset**):
 
 ```rust
-/// Helper in serializing the information required during an interactive aggsig
-/// transaction
 pub struct PartialTx {
 	pub phase: PartialTxPhase,
 	pub id: Uuid,
@@ -36,7 +34,7 @@ pub enum PartialTxPhase {
  	- **BlindingFactor blind**;
  	- выходы транзакций **OutputData**, содержащие необходимое количество монет;
 	- **amount_with_fee** = количество пересылаемых монет **amount** **+** вознаграждение **fee**;
-	- [Identifier](https://github.com/beam-mw/grin/blob/master/keychain/src/extkey.rs) **change_key**.
+	- идентификатор выхода [Identifier](https://github.com/beam-mw/grin/blob/master/keychain/src/extkey.rs) **change_key**. 
 
 ```rust
 pub struct OutputData {
@@ -76,7 +74,7 @@ pub enum OutputStatus {
 }
 ```
 
-2. Осуществляет проверку дупликатов транзакции с помощью [Keychain](https://github.com/beam-mw/grin/blob/master/keychain/src/keychain.rs):
+2. Создаёт необходимые криптографические примитивы и проверяет транзакцию на наличие дубликатов в [Keychain](https://github.com/beam-mw/grin/blob/master/keychain/src/keychain.rs):
 	- генерирует случайный **kernel_offset**, используя **Keychain**;
 	- cоздаёт [BlindSum](https://github.com/beam-mw/grin/blob/master/keychain/src/blind.rs);
 
@@ -104,7 +102,7 @@ pub enum OutputStatus {
 
 На стадии **PartialTxPhase::SenderInitiation** такой контейнер не содержит сигнатуру **secp::Signature**.   
 
-4. Отправляет контейнер **PartialTx** кошельку ***B*** по ****http****-протоколу и ждёт ответа:
+4. Отправляет контейнер **PartialTx** кошельку ***B*** по ***http***-протоколу и ждёт ответа:
 
 - кошелёк **A** выбрасывает ошибку: 
     - в случае неудачи при установлении соединения между кошельками, 
@@ -130,7 +128,7 @@ pub enum OutputStatus {
 8. Далее кошелёк ***A*** отправляет новый контейнер **PartialTx** кошельку ***B*** и ждёт ответа:
 
     - в случае успеха кошелёк ***А*** блокирует выходы **OutputData**;
-    - ??? в случае неудачи кошелёк ***А*** удаляет выход **OutputData**, соответствующий **change_key**, из списка выходов.
+    - в случае неудачи кошелёк ***А*** удаляет выход **OutputData**, соответствующий идентификатору **change_key**, из списка своих выходов.
 
     
 
