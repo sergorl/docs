@@ -83,6 +83,7 @@ pub struct Keychain {
 ```
 
 ### BlindingFactor
+**BlindingFactor** - секретный ключ, создаваемый с помощью кривой **Secp256k1**.
 ```rust
 pub struct BlindingFactor([u8; SECRET_KEY_SIZE]);
 ```
